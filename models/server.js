@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { dbConnection } = require("../databse/config");
 
 class Server {
 
@@ -7,8 +8,13 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.userPath = "/api/users";
+    this.connectDb();
     this.middlewares();
     this.routes();
+  }
+
+  async connectDb() {
+    await dbConnection();
   }
 
   routes() {
