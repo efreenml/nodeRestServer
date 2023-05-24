@@ -14,7 +14,7 @@ const middlewareFieldsValidator = async () => {
     check("password", "El password es obligatorio y debe ser máyor a 6 caracteres").isLength({min: 6}),
     check("email", "El correo no es válido").isEmail(),
     
-    check("role", "No es un rol permitido").isIn(["ADMIN_ROLE", "USER_ROL"])
+    check("role", "No es un rol permitido").isIn(["ADMIN_ROLE", "USER_ROLE"])
   ]
 }
 
