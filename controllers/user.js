@@ -2,10 +2,10 @@ const { response } = require("express");
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 
-const getUsers = async(req, res = response) => {
+const getUsers = async (req, res = response) => {
 
-  const { limit = 5, sinice = 0} = req.query;
-    console.log(req.query);
+  const { limit = 5, sinice = 0 } = req.query;
+  console.log(req.query);
 
   /* const users = await User.find({'is_active': true})
                 .limit(Number(limit))
@@ -14,10 +14,10 @@ const getUsers = async(req, res = response) => {
   // const total = await User.countDocuments({'is_active': true});
 
   const [users, total] = await Promise.all([
-    User.find({'is_active': true})
-                .limit(Number(limit))
-                .skip(Number(sinice)),
-    User.countDocuments({'is_active': true})
+    User.find({ 'is_active': true })
+      .limit(Number(limit))
+      .skip(Number(sinice)),
+    User.countDocuments({ 'is_active': true })
   ]);
   res.json({
     total,
@@ -34,22 +34,22 @@ const userPut = async (req, res = response) => {
         msg: "El id inválido"
       })
       // Yes, it's a valid ObjectId, proceed with `findById` call.
-  }
-    const {_id, password, google, email, ...userReq} = req.body;
-  
+    }
+    const { _id, password, google, email, ...userReq } = req.body;
+
     if (password) {
-  
+
       const salt = bcryptjs.genSaltSync();
       userReq.password = bcryptjs.hashSync(password, salt);
     }
-  
-    const user = await User.findByIdAndUpdate(id, userReq, {new: true});
+
+    const user = await User.findByIdAndUpdate(id, userReq, { new: true });
 
     return res.json({
       msg: "put api",
       user
     });
-    
+
   } catch (error) {
     if (error.codeName == 'DuplicateKey') {
       return res.status(400).json({
@@ -63,9 +63,9 @@ const userPut = async (req, res = response) => {
 const userPost = async (req, res = response) => {
   try {
 
-    const {name, email, password, role} = req.body;
+    const { name, email, password, role } = req.body;
 
-    let user = new User({name, email, password, role});
+    let user = new User({ name, email, password, role });
 
 
     const salt = bcryptjs.genSaltSync();
@@ -78,21 +78,30 @@ const userPost = async (req, res = response) => {
     });
   } catch (error) {
     throw error;
-    
-  }
 
   }
+
+}
 
 const userDelete = async (req, res = response) => {
 
-
-  const { id } = req.params;
-  const user = {
-    is_active: false
+  const { authUser } = req;
+  if (!authUser) {
+    return res.status(400).json({
+      msg: "Errror de token - user no exist"
+    })
   };
 
-  const userUpdated = await User.findByIdAndUpdate(id, {is_active: false});
-  console.log(userUpdated);
+  if (!authUser.is_active) {
+    return res.status(401).json({
+      msg: "El usuario no tiene los permisos necesarios -- is active false"
+    })
+  }
+
+
+  const { id } = req.params;
+
+  const userUpdated = await User.findByIdAndUpdate(id, { is_active: false });
   res.json({
     userUpdated
   });
