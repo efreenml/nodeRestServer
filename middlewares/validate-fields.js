@@ -1,7 +1,6 @@
 const { check } = require("express-validator");
 const { validationResult } = require("express-validator");
-const Role = require("../models/role");
-
+const { Role, Product } = require("../models");
 
 const middlewareFieldsValidator = async () => {
 
@@ -27,5 +26,47 @@ const validateFields = (req, res, next) => {
   next();
 }
 
+const validateCategoryId = async (req, res, next) => {
+  const { id } = req.params;
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json({
+      msg: "El id inválido"
+    })
+  }
+  const categoryFound = await Category.findById(id);
+  console.log("********hola*******");
+  console.log(id);
+  console.log(categoryFound);
+  if (!categoryFound) {
+    return res.status(400).json({
+      msg: "category Id not found by middleware"
+    })
+  }
 
-module.exports = { validateFields, middlewareFieldsValidator }
+next()
+}
+
+
+const validateProductId = async (req, res, next) => {
+  const { id } = req.params;
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json({
+      msg: "El id inválido"
+    })
+  }
+  const productFound = await Product.findById(id);
+  if (!productFound) {
+    return res.status(400).json({
+      msg: "product Id not found by middleware"
+    })
+  }
+
+next()
+}
+
+
+module.exports = { validateFields,
+   middlewareFieldsValidator,
+   validateCategoryId,
+   validateProductId
+   }
