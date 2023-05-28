@@ -36,9 +36,20 @@ const existId = async (id = '') => {
 }
 
 
+const allowedCollections = async (collection = "", collections = "") => {
+
+  const includ = collections.includes(collection);
+
+  if (!includ) {
+    throw new Error("la colección no está permitida");
+  }
+  return true;
+}
+
 
 module.exports = {
   validateRole,
   existEmail,
-  existId
+  existId,
+  allowedCollections
 }

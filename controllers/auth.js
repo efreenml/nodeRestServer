@@ -5,7 +5,6 @@ const { generateJWT } = require("../helpers/generate-jwt");
 const { verifyGoogleToken } = require("../helpers/google-verify");
 require("dotenv").config();
 const auth = async (req, res) => {
-  console.log("se está autenticando***************");
 
   const { password, email } = req.body;
   try {
@@ -22,11 +21,8 @@ const auth = async (req, res) => {
         msg: "Correo o contraseña inválidos - is active"
       });
     }
-    console.log("****user*****");
 
     const validPassword = bcryptjs.compareSync(password, user.password);
-    console.log("*****************valid Password");
-    console.log(validPassword);
 
     if (!validPassword) {
       return res.status(400).json({
@@ -78,10 +74,6 @@ const googleSignIn = async (req, res = response) => {
         msg: "El usuario no está autenticado con google"
       })
     }
-
-    console.log("**************************");
-    console.log(user);
-
 
     const token = await generateJWT(user.id);
 

@@ -87,8 +87,6 @@ const updateCategory = async (req, res) => {
     user: userId
   }
   const updatedCategory = await Category.findByIdAndUpdate(id, categoryData, { new: true });
-  console.log("********************");
-  console.log(updatedCategory)
   if (!updatedCategory) {
     return res.status(400).json({
       msg: "hubo un problema al crear la categoría"

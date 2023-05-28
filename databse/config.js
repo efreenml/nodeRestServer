@@ -9,8 +9,6 @@ const dbConnection = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
-    console.log("*********dababse connection success*********");
     
   } catch (error) {
     throw new Error("La aplicación no pudo conectarse a Mongo");

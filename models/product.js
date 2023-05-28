@@ -29,6 +29,9 @@ const ProductSchema = Schema({
  is_available: {
   type: Boolean,
   default: true
+ },
+ img: {
+  type: String
  }
 
 });

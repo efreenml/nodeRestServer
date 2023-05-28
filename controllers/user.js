@@ -5,7 +5,6 @@ const bcryptjs = require("bcryptjs");
 const getUsers = async (req, res = response) => {
 
   const { limit = 5, sinice = 0 } = req.query;
-  console.log(req.query);
 
   /* const users = await User.find({'is_active': true})
                 .limit(Number(limit))

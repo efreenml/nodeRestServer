@@ -34,9 +34,7 @@ const validateCategoryId = async (req, res, next) => {
     })
   }
   const categoryFound = await Category.findById(id);
-  console.log("********hola*******");
-  console.log(id);
-  console.log(categoryFound);
+  
   if (!categoryFound) {
     return res.status(400).json({
       msg: "category Id not found by middleware"

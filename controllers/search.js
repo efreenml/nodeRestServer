@@ -76,7 +76,6 @@ const findProduct = async (term, res) => {
 
 const findCategory = async (term, res) => {
   const isMongoId = ObjectId.isValid(term);
-  console.log(lodash.isEmpty());
   if (isMongoId) {
     const category = await Category.findById(term);
       if (!category) {
@@ -103,7 +102,6 @@ const findCategory = async (term, res) => {
 const findUser = async (term, res) => {
 
   const isMongoId = ObjectId.isValid(term);
-  console.log(lodash.isEmpty());
   if (isMongoId) {
     const user = await User.findById(term);
       if (!user) {
